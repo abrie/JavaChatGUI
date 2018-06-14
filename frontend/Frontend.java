@@ -6,14 +6,18 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Frontend extends Application {
   static private ChatClient client;
   private TextArea textArea;
+  private TextField textField;
 
   public static void main(String[] args) {
 
@@ -28,15 +32,18 @@ public class Frontend extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Hello World!");
+        primaryStage.setTitle("SocketChat");
         Button btn = new Button();
-        btn.setText("Say 'Hello World'");
+        btn.setText("Send");
         btn.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
               try {
-                client.sendMessage("Hello world!");
+                String text = textField.getText();
+                if ((text != null && !text.isEmpty())) {
+                  client.sendMessage(text);
+                }
               } catch (InterruptedException ex) {
                 System.out.println("Failed to send message" + ex.getMessage());
               }
@@ -48,9 +55,18 @@ public class Frontend extends Application {
         textArea.setWrapText(true);
         textArea.setText("Hi");
 
+        textField = new TextField();
+
         StackPane root = new StackPane();
+        StackPane.setMargin(textArea, new Insets(0,0,32,0));
         root.getChildren().add(textArea);
+
+        StackPane.setAlignment(textField, Pos.BOTTOM_LEFT);
+        root.getChildren().add(textField);
+
+        StackPane.setAlignment(btn, Pos.BOTTOM_RIGHT);
         root.getChildren().add(btn);
+
         primaryStage.setScene(new Scene(root, 300, 250));
         primaryStage.show();
 
