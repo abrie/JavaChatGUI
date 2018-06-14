@@ -12,6 +12,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 public class Frontend extends Application {
@@ -57,15 +61,21 @@ public class Frontend extends Application {
 
         textField = new TextField();
 
-        StackPane root = new StackPane();
-        StackPane.setMargin(textArea, new Insets(0,0,32,0));
-        root.getChildren().add(textArea);
+        GridPane gridPane = new GridPane();
+        ColumnConstraints column1 = new ColumnConstraints();
+        column1.setHgrow(Priority.ALWAYS);
+        gridPane.getColumnConstraints().addAll(column1, column2);
 
-        StackPane.setAlignment(textField, Pos.BOTTOM_LEFT);
-        root.getChildren().add(textField);
+        RowConstraints row1 = new RowConstraints();
+        row1.setVgrow(Priority.ALWAYS);
+        gridPane.getRowConstraints().addAll(row1);
 
-        StackPane.setAlignment(btn, Pos.BOTTOM_RIGHT);
-        root.getChildren().add(btn);
+        gridPane.setConstraints(textArea, 0, 0, 2, 1);
+        gridPane.setConstraints(textField, 0, 1, 1, 1);
+        gridPane.setConstraints(btn, 1, 1, 1, 1);
+        gridPane.getChildren().addAll(textArea, textField, btn);
+
+        root.getChildren().add(gridPane);
 
         primaryStage.setScene(new Scene(root, 300, 250));
         primaryStage.show();
