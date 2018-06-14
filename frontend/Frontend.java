@@ -16,6 +16,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.Priority;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class Frontend extends Application {
@@ -64,7 +65,7 @@ public class Frontend extends Application {
         GridPane gridPane = new GridPane();
         ColumnConstraints column1 = new ColumnConstraints();
         column1.setHgrow(Priority.ALWAYS);
-        gridPane.getColumnConstraints().addAll(column1, column2);
+        gridPane.getColumnConstraints().addAll(column1);
 
         RowConstraints row1 = new RowConstraints();
         row1.setVgrow(Priority.ALWAYS);
@@ -75,9 +76,7 @@ public class Frontend extends Application {
         gridPane.setConstraints(btn, 1, 1, 1, 1);
         gridPane.getChildren().addAll(textArea, textField, btn);
 
-        root.getChildren().add(gridPane);
-
-        primaryStage.setScene(new Scene(root, 300, 250));
+        primaryStage.setScene(new Scene(gridPane, 300, 250));
         primaryStage.show();
 
         try {
@@ -92,7 +91,6 @@ public class Frontend extends Application {
           public void handle(long now) {
             String message = client.pullMessage();
             if (message != null) {
-              System.out.println("Received message: `" + message + "`");
               textArea.appendText("\n"+message);
             }
           }
