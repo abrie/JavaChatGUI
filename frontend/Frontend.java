@@ -7,11 +7,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Frontend extends Application {
   static private ChatClient client;
+  private TextArea textArea;
 
   public static void main(String[] args) {
 
@@ -41,7 +43,13 @@ public class Frontend extends Application {
             }
         });
 
+        textArea = new TextArea();
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+        textArea.setText("Hi");
+
         StackPane root = new StackPane();
+        root.getChildren().add(textArea);
         root.getChildren().add(btn);
         primaryStage.setScene(new Scene(root, 300, 250));
         primaryStage.show();
@@ -59,6 +67,7 @@ public class Frontend extends Application {
             String message = client.pullMessage();
             if (message != null) {
               System.out.println("Received message: `" + message + "`");
+              textArea.appendText("\n"+message);
             }
           }
 

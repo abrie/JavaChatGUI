@@ -33,8 +33,7 @@ public class ReadThread extends Thread {
     while (true) {
       try {
         String response = reader.readLine();
-        System.out.println("*:" + response);
-        //incoming.offer(response);
+        incoming.offer(response);
       } catch (IOException ex) {
         System.out.println("Error reading from server: " + ex.getMessage());
         ex.printStackTrace();
