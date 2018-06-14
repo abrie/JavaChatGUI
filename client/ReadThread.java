@@ -2,6 +2,7 @@ package client;
 
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.*;
 
 /**
  * This thread is responsible for reading server's input and printing it
@@ -13,11 +14,11 @@ import java.net.*;
 public class ReadThread extends Thread {
   private BufferedReader reader;
   private Socket socket;
-  private ChatClient client;
+  private ConcurrentLinkedQueue<String> incoming;
 
-  public ReadThread(Socket socket, ChatClient client) {
+  public ReadThread(Socket socket, ConcurrentLinkedQueue<String> incoming) {
     this.socket = socket;
-    this.client = client;
+    this.incoming = incoming;
 
     try {
       InputStream input = socket.getInputStream();
@@ -32,12 +33,8 @@ public class ReadThread extends Thread {
     while (true) {
       try {
         String response = reader.readLine();
-        System.out.println("\n" + response);
-
-        // prints the username after displaying the server's message
-        if (client.getUserName() != null) {
-          System.out.print("[" + client.getUserName() + "]: ");
-        }
+        System.out.println("*:" + response);
+        //incoming.offer(response);
       } catch (IOException ex) {
         System.out.println("Error reading from server: " + ex.getMessage());
         ex.printStackTrace();

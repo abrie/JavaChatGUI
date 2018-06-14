@@ -2,6 +2,7 @@ package client;
 
 import java.net.*;
 import java.io.*;
+import java.util.concurrent.*;
 
 /**
  * This is the chat client program.
@@ -10,6 +11,9 @@ import java.io.*;
  * @author www.codejava.net
  */
 public class ChatClient {
+  private ConcurrentLinkedQueue<String> incoming;
+  private BlockingQueue<String> outgoing;
+
   private String hostname;
   private int port;
   private String userName;
@@ -17,6 +21,9 @@ public class ChatClient {
   public ChatClient(String hostname, int port) {
     this.hostname = hostname;
     this.port = port;
+
+    this.incoming = new ConcurrentLinkedQueue<>();
+    this.outgoing = new LinkedBlockingDeque<>();
   }
 
   public void execute() {
@@ -25,8 +32,8 @@ public class ChatClient {
 
       System.out.println("Connected to the chat server");
 
-      new ReadThread(socket, this).start();
-      new WriteThread(socket, this).start();
+      new ReadThread(socket, this.incoming).start();
+      new WriteThread(socket, this.outgoing).start();
 
     } catch (UnknownHostException ex) {
       System.out.println("Server not found: " + ex.getMessage());
@@ -34,6 +41,14 @@ public class ChatClient {
       System.out.println("I/O Error: " + ex.getMessage());
     }
 
+  }
+
+  public void sendMessage(String message) throws InterruptedException {
+    outgoing.put(message);
+  }
+
+  public String pullMessage() {
+    return incoming.poll();
   }
 
   void setUserName(String userName) {
@@ -45,13 +60,4 @@ public class ChatClient {
   }
 
 
-  public static void main(String[] args) {
-    if (args.length < 2) return;
-
-    String hostname = args[0];
-    int port = Integer.parseInt(args[1]);
-
-    ChatClient client = new ChatClient(hostname, port);
-    client.execute();
-  }
 }

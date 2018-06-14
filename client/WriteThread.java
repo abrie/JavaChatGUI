@@ -2,6 +2,7 @@ package client;
 
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.*;
 
 /**
  * This thread is responsible for reading user's input and send it
@@ -13,11 +14,11 @@ import java.net.*;
 public class WriteThread extends Thread {
   private PrintWriter writer;
   private Socket socket;
-  private ChatClient client;
+  private BlockingQueue<String> outgoing;
 
-  public WriteThread(Socket socket, ChatClient client) {
+  public WriteThread(Socket socket, BlockingQueue<String> outgoing) {
     this.socket = socket;
-    this.client = client;
+    this.outgoing = outgoing;
 
     try {
       OutputStream output = socket.getOutputStream();
@@ -29,19 +30,17 @@ public class WriteThread extends Thread {
   }
 
   public void run() {
-
-    Console console = System.console();
-
-    String userName = console.readLine("\nEnter your name: ");
-    client.setUserName(userName);
-    writer.println(userName);
-
     String text;
 
     do {
-      text = console.readLine("[" + userName + "]: ");
-      writer.println(text);
-
+      try {
+        text = outgoing.take();
+        writer.println(text);
+      } catch (InterruptedException ex) {
+        //Thread.currentThread().interrupt();
+        System.out.println("outgoing queue read is interrupted." + ex.getMessage());
+        break;
+      }
     } while (!text.equals("bye"));
 
     try {
