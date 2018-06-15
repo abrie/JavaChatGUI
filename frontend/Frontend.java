@@ -76,6 +76,7 @@ public class Frontend extends Application {
             String command = client.pullCommand();
             if (command != null) {
               if (command.equals("close")) {
+                stop();
                 client.close();
                 primaryStage.setScene(settingsScene);
               }
