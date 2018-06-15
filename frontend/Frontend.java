@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -20,19 +21,26 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class Frontend extends Application {
-  static private ChatClient client;
+  private ChatClient client;
   private TextArea textArea;
   private TextField textField;
 
+  private TextField hostField;
+  private TextField portField;
+  private TextField nameField;
+
   public static void main(String[] args) {
 
-    String hostname = "localhost";
-    int port = 9999;
-
-    client = new ChatClient(hostname, port);
-    client.execute();
-
     launch(args);
+  }
+
+  private String getTextFieldContents(TextField field) {
+    String text = field.getText();
+    if ((text != null && !text.isEmpty())) {
+      return text;
+    } else {
+      return null;
+    }
   }
 
     @Override
@@ -45,8 +53,8 @@ public class Frontend extends Application {
             @Override
             public void handle(ActionEvent event) {
               try {
-                String text = textField.getText();
-                if ((text != null && !text.isEmpty())) {
+                String text = getTextFieldContents(textField);
+                if (text != null) {
                   client.sendMessage(text);
                 }
               } catch (InterruptedException ex) {
@@ -54,6 +62,16 @@ public class Frontend extends Application {
               }
             }
         });
+
+        AnimationTimer timer = new AnimationTimer() {
+          @Override
+          public void handle(long now) {
+            String message = client.pullMessage();
+            if (message != null) {
+              textArea.appendText("\n"+message);
+            }
+          }
+        };
 
         textArea = new TextArea();
         textArea.setEditable(false);
@@ -76,27 +94,50 @@ public class Frontend extends Application {
         gridPane.setConstraints(btn, 1, 1, 1, 1);
         gridPane.getChildren().addAll(textArea, textField, btn);
 
-        primaryStage.setScene(new Scene(gridPane, 300, 250));
-        primaryStage.show();
 
-        try {
-          client.sendMessage("abrie"); // Server expects first message to be the user's name;
-        } catch (InterruptedException ex) {
-          System.out.println("Failed to send initial message" + ex.getMessage());
-        }
+        Button connectButton = new Button();
+        connectButton.setText("Connect");
+        connectButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+              String hosttext = getTextFieldContents(hostField);
+              String porttext = getTextFieldContents(portField);
+              String nametext = getTextFieldContents(nameField);
 
-        AnimationTimer timer = new AnimationTimer() {
+              int port = Integer.parseInt(porttext);
 
-          @Override
-          public void handle(long now) {
-            String message = client.pullMessage();
-            if (message != null) {
-              textArea.appendText("\n"+message);
+              client = new ChatClient(hosttext, port, nametext);
+              client.execute();
+
+              primaryStage.setScene(new Scene(gridPane, 300, 250));
+
+              timer.start();
             }
-          }
+        });
 
-        };
+        Label hostLabel = new Label("Host name");
+        hostField = new TextField();
+        hostField.setText("localhost");
 
-        timer.start();
+        Label portLabel = new Label("Host port");
+        portField = new TextField();
+        portField.setText("9999");
+
+        Label nameLabel = new Label("Username");
+        nameField = new TextField();
+        nameField.setText("abrie");
+
+        GridPane settingsPane = new GridPane();
+        settingsPane.setConstraints(hostLabel, 0, 0);
+        settingsPane.setConstraints(hostField, 1, 0);
+        settingsPane.setConstraints(portLabel, 0, 1);
+        settingsPane.setConstraints(portField, 1, 1);
+        settingsPane.setConstraints(nameLabel, 0, 2);
+        settingsPane.setConstraints(nameField, 1, 2);
+        settingsPane.setConstraints(connectButton, 1, 3);
+        settingsPane.getChildren().addAll(connectButton, hostLabel, hostField, portLabel, portField, nameLabel, nameField);
+
+        primaryStage.setScene(new Scene(settingsPane, 300, 250));
+        primaryStage.show();
     }
 }

@@ -16,11 +16,12 @@ public class ChatClient {
 
   private String hostname;
   private int port;
-  private String userName;
+  private String username;
 
-  public ChatClient(String hostname, int port) {
+  public ChatClient(String hostname, int port, String username) {
     this.hostname = hostname;
     this.port = port;
+    this.username = username;
 
     this.incoming = new ConcurrentLinkedQueue<>();
     this.outgoing = new LinkedBlockingDeque<>();
@@ -35,10 +36,14 @@ public class ChatClient {
       new ReadThread(socket, this.incoming).start();
       new WriteThread(socket, this.outgoing).start();
 
+      sendMessage(username); // Server expects first message to be the user's name;
+
     } catch (UnknownHostException ex) {
       System.out.println("Server not found: " + ex.getMessage());
     } catch (IOException ex) {
       System.out.println("I/O Error: " + ex.getMessage());
+    } catch (InterruptedException ex) {
+        System.out.println("Failed to send initial message" + ex.getMessage());
     }
 
   }
@@ -50,14 +55,4 @@ public class ChatClient {
   public String pullMessage() {
     return incoming.poll();
   }
-
-  void setUserName(String userName) {
-    this.userName = userName;
-  }
-
-  String getUserName() {
-    return this.userName;
-  }
-
-
 }
