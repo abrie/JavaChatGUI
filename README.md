@@ -9,13 +9,17 @@ The application will be enhanced with a GUI for the ChatClient component.
 # How do I use this?
 
 - Clone the repository:
-``` https://github.com/abrie/JavaChatGUI.git
+`https://github.com/abrie/JavaChatGUI.git`
+
 - Compile the components:
-``` make all
+`make all`
+
 - Start the server:
-``` java server.ChatServer 9999
+`java server.ChatServer 9999`
+
 - Start the frontend chat GUI:
-``` java frontend.Frontend
+`java frontend.Frontend`
+
 Change the parameters (if necessary), set a username, click connect. Type a message, click send.
 
 Close the window to quit, or type 'quit' as a message to disconnect.
