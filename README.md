@@ -4,9 +4,9 @@ This is a repository to document the enhancement of a Java socket chat applicati
 The original CLI code is taken from [this codejava.net page](http://www.codejava.net/java-se/networking/how-to-create-a-chat-console-application-in-java-using-socket). The original code is represented by the the first commit in this repository.
 
 # What is the enhancement?
-The application has been enhanced with a GUI.
+The application has been enhanced with a JavaFX GUI.
 
-# How do I use this?
+# How do I test this?
 
 - Clone the repository:
 `git clone https://github.com/abrie/JavaChatGUI.git`
@@ -18,16 +18,16 @@ The application has been enhanced with a GUI.
 `java server.ChatServer 9999`
 ![Chat Server](/screenshots/server.png)
 
-- Open another terminal window, and start the frontend chat GUI:
+- Open a new terminal window, change to the repository directory, and start the frontend:
 `java frontend.Frontend`
 ![Frontend CLI](/screenshots/frontend-cli.png)
 
-Change the connect parameters if the defaults are not suitable. Note the default hostname of `localhost` and the default port of `9999` match the server invocation described above. Set a username, click connect. 
+The frontend application will spawn a GUI window. Change the connect parameters to match your server configuration. Use the defaults if you followed the above directions. Now set a username, and click connect.
 ![Frontend CLI](/screenshots/frontend-settings.png)
 
-If successful, you'll see a chat window. If not, check the console window for an error message. 
+If successful, you'll see a chat window. If not, check the console window for an error message.
 
-Launch additional instances using `java frontend.Frontend` to add more users. Other computers on the LAN may also connect, assuming you know the server machine's IP and have a suitable firewall configuration (left as an exercise to the reader.) 
+Launch additional instances using `java frontend.Frontend` to add more users. Other computers on the LAN may also connect, assuming you know the server machine's IP and have a suitable firewall configuration (left as an exercise to the reader.)
 
 ![Frontend Chat](/screenshots/frontend-chat.png)
 
@@ -37,6 +37,6 @@ To completely exit, either hit CTRL-C in the terminal window, close the chat win
 
 # Why was this made?
 
-The reasons are vague.
+The reasons are vague and might never be satisfactorily explained.
 
 Questions, email ***abrhie@gmail.com***
