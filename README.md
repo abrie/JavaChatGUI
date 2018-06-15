@@ -4,14 +4,14 @@ This is a repository to document the enhancement of a Java socket chat applicati
 The original CLI code is taken from [this codejava.net page](http://www.codejava.net/java-se/networking/how-to-create-a-chat-console-application-in-java-using-socket). The original code is represented by the the first commit in this repository.
 
 # What is the enhancement?
-The application has been enhanced with a GUI for the ChatClient component.
+The application has been enhanced with a GUI.
 
 # How do I use this?
 
 - Clone the repository:
-`https://github.com/abrie/JavaChatGUI.git`
+`git clone https://github.com/abrie/JavaChatGUI.git`
 
-- Compile the components:
+- Change into the repository directory, and build the components:
 `make all`
 
 - Start the server:
