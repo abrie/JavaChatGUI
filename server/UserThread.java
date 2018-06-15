@@ -5,10 +5,10 @@ import java.net.*;
 import java.util.*;
 
 /**
- * This thread handles connection for each connected client, so the server
- * can handle multiple clients at the same time.
+ * This thread encapsulates a client connection.
  *
- * @author www.codejava.net
+ * original author: www.codejava.net
+ * converted to support a GUI by github.com/abrie
  */
 public class UserThread extends Thread {
   private Socket socket;
@@ -70,7 +70,7 @@ public class UserThread extends Thread {
   }
 
   /**
-   * Sends a message to the client.
+   * Send a message to this client.
    */
   void sendMessage(String message) {
     writer.println(message);

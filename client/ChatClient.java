@@ -8,7 +8,8 @@ import java.util.concurrent.*;
  * This is the chat client program.
  * Type 'bye' to terminte the program.
  *
- * @author www.codejava.net
+ * original author: www.codejava.net
+ * converted to support a GUI by github.com/abrie
  */
 public class ChatClient {
   private ConcurrentLinkedQueue<String> incoming;
@@ -36,12 +37,12 @@ public class ChatClient {
     try {
       socket = new Socket(hostname, port);
 
-      System.out.println("Connected to the chat server");
-
       new ReadThread(socket, this.incoming, this.commands).start();
       new WriteThread(socket, this.outgoing).start();
 
       sendMessage(username); // Server expects first message to be the user's name;
+
+      System.out.println("Connected to the chat server.");
 
     } catch (UnknownHostException ex) {
       errorMessage = "Server not found: " + ex.getMessage();

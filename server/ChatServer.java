@@ -8,7 +8,8 @@ import java.util.*;
  * This is the chat server program.
  * Press Ctrl + C to terminate the program.
  *
- * @author www.codejava.net
+ * original author: www.codejava.net
+ * converted to support a GUI by github.com/abrie
  */
 public class ChatServer {
   private int port;
@@ -30,7 +31,6 @@ public class ChatServer {
         UserThread newUser = new UserThread(socket, this);
         userThreads.add(newUser);
         newUser.start();
-
       }
 
     } catch (IOException ex) {
@@ -52,7 +52,7 @@ public class ChatServer {
   }
 
   /**
-   * Delivers a message from one user to others (broadcasting)
+   * Broadcasts a message to all users
    */
   void broadcast(String message) {
     for (UserThread aUser : userThreads) {
@@ -61,7 +61,8 @@ public class ChatServer {
   }
 
   /**
-   * Stores username of the newly connected client.
+   * Stores a username of newly connected client.
+   * NB/TODO: Enforce uniqueness.
    */
   void addUserName(String userName) {
     userNames.add(userName);
@@ -69,7 +70,7 @@ public class ChatServer {
   }
 
   /**
-   * Remove a username and broadcast news of departure.
+   * Remove a username and broadcast news of of their departure.
    */
   void removeUser(String userName, UserThread aUser) {
     boolean removed = userNames.remove(userName);
@@ -85,7 +86,7 @@ public class ChatServer {
   }
 
   /**
-   * Returns true if there are other users connected (not count the currently connected user)
+   * Returns true if there are other users connected.
    */
   boolean hasUsers() {
     return !this.userNames.isEmpty();

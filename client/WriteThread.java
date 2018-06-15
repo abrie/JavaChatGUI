@@ -9,7 +9,8 @@ import java.util.concurrent.*;
  * to the server.
  * It runs in an infinite loop until the user types 'bye' to quit.
  *
- * @author www.codejava.net
+ * original author: www.codejava.net
+ * converted to support a GUI by github.com/abrie
  */
 public class WriteThread extends Thread {
   private PrintWriter writer;
@@ -40,11 +41,10 @@ public class WriteThread extends Thread {
         }
         writer.println(text);
       } catch (InterruptedException ex) {
-        //Thread.currentThread().interrupt();
-        System.out.println("outgoing queue read is interrupted." + ex.getMessage());
+        Thread.currentThread().interrupt();
+        System.out.println("Outgoing queue read is interrupted." + ex.getMessage());
         break;
       }
     };
-
   }
 }

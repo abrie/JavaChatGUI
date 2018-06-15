@@ -9,7 +9,8 @@ import java.util.concurrent.*;
  * to the console.
  * It runs in an infinite loop until the client disconnects from the server.
  *
- * @author www.codejava.net
+ * original author: www.codejava.net
+ * converted to support a GUI by github.com/abrie
  */
 public class ReadThread extends Thread {
   private BufferedReader reader;
@@ -17,7 +18,10 @@ public class ReadThread extends Thread {
   private ConcurrentLinkedQueue<String> incoming;
   private ConcurrentLinkedQueue<String> commands;
 
-  public ReadThread(Socket socket, ConcurrentLinkedQueue<String> incoming, ConcurrentLinkedQueue<String> commands) {
+  public ReadThread( Socket socket,
+      ConcurrentLinkedQueue<String> incoming,
+      ConcurrentLinkedQueue<String> commands) {
+
     this.socket = socket;
     this.incoming = incoming;
     this.commands = commands;
@@ -45,6 +49,7 @@ public class ReadThread extends Thread {
         break;
       }
     }
-  commands.offer("close");
+
+    commands.offer("close");
   }
 }
