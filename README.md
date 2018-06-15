@@ -17,10 +17,13 @@ The application will be enhanced with a GUI for the ChatClient component.
 - Start the server:
 `java server.ChatServer 9999`
 
-- Start the frontend chat GUI:
+- Open another terminal window, and start the frontend chat GUI:
 `java frontend.Frontend`
 
-Change the parameters (if necessary), set a username, click connect. Type a message, click send.
+Change the parameters (if necessary). Note the default hostname is `localhost` and the default port is `9999`. Set a username, click connect. If successful, you'll see a chat window. If not, check the console for an error message.
 
-Close the window to quit, or type 'quit' as a message to disconnect.
+To disconnect, type 'quit' as a chat message.
 
+To completely exit, either hit CTRL-C in the terminal window, close the chat window, or turn off your computer. ;)
+
+Questions, email ***abrhie@gmail.com***
