@@ -8,6 +8,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -147,8 +149,11 @@ public class Frontend extends Application {
     });
 
     Label titleLabel = new Label("SocketChat");
+    GridPane.setHalignment(titleLabel, HPos.CENTER);
+    GridPane.setValignment(titleLabel, VPos.CENTER);
     titleLabel.setTextAlignment(TextAlignment.CENTER);
     titleLabel.setFont(new Font("Arial", 30));
+    titleLabel.setPadding(new Insets(10, 10, 10, 10));
 
     Label hostLabel = new Label("Host name");
     hostField = new TextField();
