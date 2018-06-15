@@ -55,7 +55,7 @@ public class ChatServer {
   /**
    * Delivers a message from one user to others (broadcasting)
    */
-  void broadcast(String message, UserThread excludeUser) {
+  void broadcast(String message) {
     for (UserThread aUser : userThreads) {
       aUser.sendMessage(message);
     }
@@ -69,13 +69,13 @@ public class ChatServer {
   }
 
   /**
-   * When a client is disconneted, removes the associated username and UserThread
+   * Remove a username and broadcast news of departure.
    */
   void removeUser(String userName, UserThread aUser) {
     boolean removed = userNames.remove(userName);
     if (removed) {
       userThreads.remove(aUser);
-      System.out.println("The user " + userName + " quitted");
+      broadcast("The user " + userName + " quit.");
     }
   }
 

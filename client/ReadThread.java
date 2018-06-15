@@ -33,7 +33,12 @@ public class ReadThread extends Thread {
     while (true) {
       try {
         String response = reader.readLine();
-        incoming.offer(response);
+        if (response != null) {
+          incoming.offer(response);
+        } else {
+          incoming.offer("You have disconnected.");
+          break;
+        }
       } catch (IOException ex) {
         System.out.println("Error reading from server: " + ex.getMessage());
         ex.printStackTrace();
