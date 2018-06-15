@@ -30,7 +30,6 @@ public class Frontend extends Application {
   private TextField nameField;
 
   public static void main(String[] args) {
-
     launch(args);
   }
 
@@ -76,7 +75,6 @@ public class Frontend extends Application {
         textArea = new TextArea();
         textArea.setEditable(false);
         textArea.setWrapText(true);
-        textArea.setText("Hi");
 
         textField = new TextField();
 
@@ -107,11 +105,15 @@ public class Frontend extends Application {
               int port = Integer.parseInt(porttext);
 
               client = new ChatClient(hosttext, port, nametext);
-              client.execute();
+              boolean success = client.execute();
 
-              primaryStage.setScene(new Scene(gridPane, 300, 250));
-
-              timer.start();
+              if (success) {
+                primaryStage.setScene(new Scene(gridPane, 300, 250));
+                timer.start();
+              } else {
+                System.out.println("Failed to connect.");
+                System.out.println(client.getErrorMessage());
+              }
             }
         });
 

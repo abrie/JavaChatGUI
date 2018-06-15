@@ -18,6 +18,8 @@ public class ChatClient {
   private int port;
   private String username;
 
+  private String errorMessage;
+
   public ChatClient(String hostname, int port, String username) {
     this.hostname = hostname;
     this.port = port;
@@ -27,7 +29,7 @@ public class ChatClient {
     this.outgoing = new LinkedBlockingDeque<>();
   }
 
-  public void execute() {
+  public boolean execute() {
     try {
       Socket socket = new Socket(hostname, port);
 
@@ -39,13 +41,22 @@ public class ChatClient {
       sendMessage(username); // Server expects first message to be the user's name;
 
     } catch (UnknownHostException ex) {
-      System.out.println("Server not found: " + ex.getMessage());
+      errorMessage = "Server not found: " + ex.getMessage();
+      return false;
     } catch (IOException ex) {
-      System.out.println("I/O Error: " + ex.getMessage());
+      errorMessage = "I/O Error: " + ex.getMessage();
+      return false;
     } catch (InterruptedException ex) {
-        System.out.println("Failed to send initial message" + ex.getMessage());
+      errorMessage = "Failed to send initial message" + ex.getMessage();
+      return false;
     }
 
+    return true;
+
+  }
+
+  public String getErrorMessage() {
+    return errorMessage;
   }
 
   public void sendMessage(String message) throws InterruptedException {
