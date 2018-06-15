@@ -18,6 +18,8 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.Priority;
 import javafx.scene.control.Button;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class Frontend extends Application {
@@ -144,6 +146,10 @@ public class Frontend extends Application {
       }
     });
 
+    Label titleLabel = new Label("SocketChat");
+    titleLabel.setTextAlignment(TextAlignment.CENTER);
+    titleLabel.setFont(new Font("Arial", 30));
+
     Label hostLabel = new Label("Host name");
     hostField = new TextField();
     hostField.setText("localhost");
@@ -157,14 +163,16 @@ public class Frontend extends Application {
     nameField.setText("abrie");
 
     GridPane settingsPane = new GridPane();
-    settingsPane.setConstraints(hostLabel, 0, 0);
-    settingsPane.setConstraints(hostField, 1, 0);
-    settingsPane.setConstraints(portLabel, 0, 1);
-    settingsPane.setConstraints(portField, 1, 1);
-    settingsPane.setConstraints(nameLabel, 0, 2);
-    settingsPane.setConstraints(nameField, 1, 2);
-    settingsPane.setConstraints(connectButton, 1, 3);
-    settingsPane.getChildren().addAll(connectButton, hostLabel, hostField, portLabel, portField, nameLabel, nameField);
+    settingsPane.setAlignment(Pos.CENTER);
+    settingsPane.setConstraints(titleLabel, 0, 0, 2, 1);
+    settingsPane.setConstraints(hostLabel, 0, 1);
+    settingsPane.setConstraints(hostField, 1, 1);
+    settingsPane.setConstraints(portLabel, 0, 2);
+    settingsPane.setConstraints(portField, 1, 2);
+    settingsPane.setConstraints(nameLabel, 0, 3);
+    settingsPane.setConstraints(nameField, 1, 3);
+    settingsPane.setConstraints(connectButton, 1, 4);
+    settingsPane.getChildren().addAll(connectButton, titleLabel, hostLabel, hostField, portLabel, portField, nameLabel, nameField);
 
     chatScene = new Scene(gridPane, 300, 250);
     settingsScene = new Scene(settingsPane, 300, 250);
