@@ -15,10 +15,12 @@ public class ReadThread extends Thread {
   private BufferedReader reader;
   private Socket socket;
   private ConcurrentLinkedQueue<String> incoming;
+  private ConcurrentLinkedQueue<String> commands;
 
-  public ReadThread(Socket socket, ConcurrentLinkedQueue<String> incoming) {
+  public ReadThread(Socket socket, ConcurrentLinkedQueue<String> incoming, ConcurrentLinkedQueue<String> commands) {
     this.socket = socket;
     this.incoming = incoming;
+    this.commands = commands;
 
     try {
       InputStream input = socket.getInputStream();
@@ -36,7 +38,8 @@ public class ReadThread extends Thread {
         if (response != null) {
           incoming.offer(response);
         } else {
-          incoming.offer("You have disconnected.");
+          incoming.offer("You are disconnected.");
+          commands.offer("close");
           break;
         }
       } catch (IOException ex) {

@@ -29,6 +29,9 @@ public class Frontend extends Application {
   private TextField portField;
   private TextField nameField;
 
+  private Scene chatScene;
+  private Scene settingsScene;
+
   public static void main(String[] args) {
     launch(args);
   }
@@ -69,6 +72,14 @@ public class Frontend extends Application {
             if (message != null) {
               textArea.appendText("\n"+message);
             }
+
+            String command = client.pullCommand();
+            if (command != null) {
+              if (command.equals("close")) {
+                client.close();
+                primaryStage.setScene(settingsScene);
+              }
+            }
           }
         };
 
@@ -108,7 +119,9 @@ public class Frontend extends Application {
               boolean success = client.execute();
 
               if (success) {
-                primaryStage.setScene(new Scene(gridPane, 300, 250));
+                textArea.setText("");
+                textField.setText("");
+                primaryStage.setScene(chatScene);
                 timer.start();
               } else {
                 System.out.println("Failed to connect.");
@@ -139,7 +152,10 @@ public class Frontend extends Application {
         settingsPane.setConstraints(connectButton, 1, 3);
         settingsPane.getChildren().addAll(connectButton, hostLabel, hostField, portLabel, portField, nameLabel, nameField);
 
-        primaryStage.setScene(new Scene(settingsPane, 300, 250));
+        chatScene = new Scene(gridPane, 300, 250);
+        settingsScene = new Scene(settingsPane, 300, 250);
+
+        primaryStage.setScene(settingsScene);
         primaryStage.show();
     }
 }

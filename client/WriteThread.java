@@ -32,22 +32,19 @@ public class WriteThread extends Thread {
   public void run() {
     String text;
 
-    do {
+    for(;;) {
       try {
         text = outgoing.take();
+        if (text.equals("TERMINATE")) {
+          break;
+        }
         writer.println(text);
       } catch (InterruptedException ex) {
         //Thread.currentThread().interrupt();
         System.out.println("outgoing queue read is interrupted." + ex.getMessage());
         break;
       }
-    } while (!text.equals("bye"));
+    };
 
-    try {
-      socket.close();
-    } catch (IOException ex) {
-
-      System.out.println("Error writing to server: " + ex.getMessage());
-    }
   }
 }

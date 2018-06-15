@@ -26,7 +26,6 @@ public class ChatServer {
 
       while (true) {
         Socket socket = serverSocket.accept();
-        System.out.println("New user connected");
 
         UserThread newUser = new UserThread(socket, this);
         userThreads.add(newUser);
@@ -66,6 +65,7 @@ public class ChatServer {
    */
   void addUserName(String userName) {
     userNames.add(userName);
+    System.out.println("New user connected:" + userName);
   }
 
   /**
@@ -76,6 +76,7 @@ public class ChatServer {
     if (removed) {
       userThreads.remove(aUser);
       broadcast("The user " + userName + " quit.");
+      System.out.println("User disconnected:" + userName);
     }
   }
 
