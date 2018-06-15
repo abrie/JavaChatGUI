@@ -70,6 +70,7 @@ public class Frontend extends Application {
           String text = getTextFieldContents(textField);
           if (text != null) {
             client.sendMessage(text);
+            textField.setText("");
           }
         } catch (InterruptedException ex) {
           System.out.println("Failed to send message" + ex.getMessage());
