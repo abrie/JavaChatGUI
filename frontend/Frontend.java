@@ -47,128 +47,128 @@ public class Frontend extends Application {
     }
   }
 
-    @Override
-    public void start(Stage primaryStage) {
-      primaryStage.setOnCloseRequest(event -> {
-        if (client != null) {
-          client.close();
-        }
+  @Override
+  public void start(Stage primaryStage) {
+    primaryStage.setOnCloseRequest(event -> {
+      if (client != null) {
+        client.close();
+      }
 
-        if (timer != null) {
-          timer.stop();
-        }
-      });
+      if (timer != null) {
+        timer.stop();
+      }
+    });
 
-        primaryStage.setTitle("SocketChat");
-        Button btn = new Button();
-        btn.setText("Send");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+    primaryStage.setTitle("SocketChat");
+    Button btn = new Button();
+    btn.setText("Send");
+    btn.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
-            public void handle(ActionEvent event) {
-              try {
-                String text = getTextFieldContents(textField);
-                if (text != null) {
-                  client.sendMessage(text);
-                }
-              } catch (InterruptedException ex) {
-                System.out.println("Failed to send message" + ex.getMessage());
-              }
-            }
-        });
-
-        timer = new AnimationTimer() {
-          @Override
-          public void handle(long now) {
-            String message = client.pullMessage();
-            if (message != null) {
-              textArea.appendText("\n"+message);
-            }
-
-            String command = client.pullCommand();
-            if (command != null) {
-              if (command.equals("close")) {
-                stop();
-                client.close();
-                primaryStage.setScene(settingsScene);
-              }
-            }
+      @Override
+      public void handle(ActionEvent event) {
+        try {
+          String text = getTextFieldContents(textField);
+          if (text != null) {
+            client.sendMessage(text);
           }
-        };
+        } catch (InterruptedException ex) {
+          System.out.println("Failed to send message" + ex.getMessage());
+        }
+      }
+    });
 
-        textArea = new TextArea();
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
+    timer = new AnimationTimer() {
+      @Override
+      public void handle(long now) {
+        String message = client.pullMessage();
+        if (message != null) {
+          textArea.appendText("\n"+message);
+        }
 
-        textField = new TextField();
+        String command = client.pullCommand();
+        if (command != null) {
+          if (command.equals("close")) {
+            stop();
+            client.close();
+            primaryStage.setScene(settingsScene);
+          }
+        }
+      }
+    };
 
-        GridPane gridPane = new GridPane();
-        ColumnConstraints column1 = new ColumnConstraints();
-        column1.setHgrow(Priority.ALWAYS);
-        gridPane.getColumnConstraints().addAll(column1);
+    textArea = new TextArea();
+    textArea.setEditable(false);
+    textArea.setWrapText(true);
 
-        RowConstraints row1 = new RowConstraints();
-        row1.setVgrow(Priority.ALWAYS);
-        gridPane.getRowConstraints().addAll(row1);
+    textField = new TextField();
 
-        gridPane.setConstraints(textArea, 0, 0, 2, 1);
-        gridPane.setConstraints(textField, 0, 1, 1, 1);
-        gridPane.setConstraints(btn, 1, 1, 1, 1);
-        gridPane.getChildren().addAll(textArea, textField, btn);
+    GridPane gridPane = new GridPane();
+    ColumnConstraints column1 = new ColumnConstraints();
+    column1.setHgrow(Priority.ALWAYS);
+    gridPane.getColumnConstraints().addAll(column1);
+
+    RowConstraints row1 = new RowConstraints();
+    row1.setVgrow(Priority.ALWAYS);
+    gridPane.getRowConstraints().addAll(row1);
+
+    gridPane.setConstraints(textArea, 0, 0, 2, 1);
+    gridPane.setConstraints(textField, 0, 1, 1, 1);
+    gridPane.setConstraints(btn, 1, 1, 1, 1);
+    gridPane.getChildren().addAll(textArea, textField, btn);
 
 
-        Button connectButton = new Button();
-        connectButton.setText("Connect");
-        connectButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-              String hosttext = getTextFieldContents(hostField);
-              String porttext = getTextFieldContents(portField);
-              String nametext = getTextFieldContents(nameField);
+    Button connectButton = new Button();
+    connectButton.setText("Connect");
+    connectButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        String hosttext = getTextFieldContents(hostField);
+        String porttext = getTextFieldContents(portField);
+        String nametext = getTextFieldContents(nameField);
 
-              int port = Integer.parseInt(porttext);
+        int port = Integer.parseInt(porttext);
 
-              client = new ChatClient(hosttext, port, nametext);
-              boolean success = client.execute();
+        client = new ChatClient(hosttext, port, nametext);
+        boolean success = client.execute();
 
-              if (success) {
-                textArea.setText("");
-                textField.setText("");
-                primaryStage.setScene(chatScene);
-                timer.start();
-              } else {
-                System.out.println("Failed to connect.");
-                System.out.println(client.getErrorMessage());
-              }
-            }
-        });
+        if (success) {
+          textArea.setText("");
+          textField.setText("");
+          primaryStage.setScene(chatScene);
+          timer.start();
+        } else {
+          System.out.println("Failed to connect.");
+          System.out.println(client.getErrorMessage());
+        }
+      }
+    });
 
-        Label hostLabel = new Label("Host name");
-        hostField = new TextField();
-        hostField.setText("localhost");
+    Label hostLabel = new Label("Host name");
+    hostField = new TextField();
+    hostField.setText("localhost");
 
-        Label portLabel = new Label("Host port");
-        portField = new TextField();
-        portField.setText("9999");
+    Label portLabel = new Label("Host port");
+    portField = new TextField();
+    portField.setText("9999");
 
-        Label nameLabel = new Label("Username");
-        nameField = new TextField();
-        nameField.setText("abrie");
+    Label nameLabel = new Label("Username");
+    nameField = new TextField();
+    nameField.setText("abrie");
 
-        GridPane settingsPane = new GridPane();
-        settingsPane.setConstraints(hostLabel, 0, 0);
-        settingsPane.setConstraints(hostField, 1, 0);
-        settingsPane.setConstraints(portLabel, 0, 1);
-        settingsPane.setConstraints(portField, 1, 1);
-        settingsPane.setConstraints(nameLabel, 0, 2);
-        settingsPane.setConstraints(nameField, 1, 2);
-        settingsPane.setConstraints(connectButton, 1, 3);
-        settingsPane.getChildren().addAll(connectButton, hostLabel, hostField, portLabel, portField, nameLabel, nameField);
+    GridPane settingsPane = new GridPane();
+    settingsPane.setConstraints(hostLabel, 0, 0);
+    settingsPane.setConstraints(hostField, 1, 0);
+    settingsPane.setConstraints(portLabel, 0, 1);
+    settingsPane.setConstraints(portField, 1, 1);
+    settingsPane.setConstraints(nameLabel, 0, 2);
+    settingsPane.setConstraints(nameField, 1, 2);
+    settingsPane.setConstraints(connectButton, 1, 3);
+    settingsPane.getChildren().addAll(connectButton, hostLabel, hostField, portLabel, portField, nameLabel, nameField);
 
-        chatScene = new Scene(gridPane, 300, 250);
-        settingsScene = new Scene(settingsPane, 300, 250);
+    chatScene = new Scene(gridPane, 300, 250);
+    settingsScene = new Scene(settingsPane, 300, 250);
 
-        primaryStage.setScene(settingsScene);
-        primaryStage.show();
-    }
+    primaryStage.setScene(settingsScene);
+    primaryStage.show();
+  }
 }
