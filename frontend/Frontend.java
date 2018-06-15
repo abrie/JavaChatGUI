@@ -32,6 +32,8 @@ public class Frontend extends Application {
   private Scene chatScene;
   private Scene settingsScene;
 
+  private AnimationTimer timer;
+
   public static void main(String[] args) {
     launch(args);
   }
@@ -47,6 +49,16 @@ public class Frontend extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+      primaryStage.setOnCloseRequest(event -> {
+        if (client != null) {
+          client.close();
+        }
+
+        if (timer != null) {
+          timer.stop();
+        }
+      });
+
         primaryStage.setTitle("SocketChat");
         Button btn = new Button();
         btn.setText("Send");
@@ -65,7 +77,7 @@ public class Frontend extends Application {
             }
         });
 
-        AnimationTimer timer = new AnimationTimer() {
+        timer = new AnimationTimer() {
           @Override
           public void handle(long now) {
             String message = client.pullMessage();

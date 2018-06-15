@@ -39,14 +39,12 @@ public class ReadThread extends Thread {
           incoming.offer(response);
         } else {
           incoming.offer("You are disconnected.");
-          commands.offer("close");
           break;
         }
       } catch (IOException ex) {
-        System.out.println("Error reading from server: " + ex.getMessage());
-        ex.printStackTrace();
         break;
       }
     }
+  commands.offer("close");
   }
 }
