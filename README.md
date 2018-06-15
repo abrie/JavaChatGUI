@@ -26,7 +26,7 @@ Set a username, click connect.
 
 If successful, you'll see a chat window. If not, check the console window for an error message. 
 
-Launch additional instances of the frontend.Frontend application to add more users.
+Launch additional instances using `java frontend.Frontend` to add more users. Other computers on the LAN may also connect, assuming you know the server machine's IP and have a suitable firewall configuration (left as an exercise to the reader.) 
 
 To disconnect, type 'quit' as a chat message.
 
@@ -34,6 +34,6 @@ To completely exit, either hit CTRL-C in the terminal window, close the chat win
 
 # Why was this made?
 
-I'm not sure...
+The reasons are vague.
 
 Questions, email ***abrhie@gmail.com***
